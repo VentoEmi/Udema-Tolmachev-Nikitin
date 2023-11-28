@@ -3,6 +3,7 @@
 /config/*
 /data/*
 /logs/*
-/www/**
+/www/vendor/
+/www/udema/*
 .DS_Store
 /buildtest
