@@ -1,21 +1,18 @@
 <?php
 
-namespace Src\middleware;
+namespace Src\Middleware;
 
 use Closure;
 use Laminas\Diactoros\Response\RedirectResponse;
-use ORM;
 use Psr\Http\Message\ServerRequestInterface;
 
-class AdminMiddleware
+class AuthMiddleware
 {
     public function handle(ServerRequestInterface $request, Closure $next)
     {
-        $admin = ORM::forTable('users')->find_one($_SESSION['user_id']);
-        if ($admin->is_admin == 1){
+        if (isset($_SESSION['user_id'])){
             return $next($request);
         }
         return new RedirectResponse('/login');
     }
-
 }

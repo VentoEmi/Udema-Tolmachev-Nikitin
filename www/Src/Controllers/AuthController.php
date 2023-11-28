@@ -4,10 +4,19 @@ namespace Src\Controllers;
 
 use Laminas\Diactoros\Response\RedirectResponse;
 use Laminas\Diactoros\ServerRequest;
+use MiladRahimi\PhpRouter\View\View;
 use ORM;
 
 class AuthController
 {
+    public function registrationPage(View $view)
+    {
+        return $view->make('Auth.register');
+    }
+    public function loginPage(View $view)
+    {
+        return $view->make('Auth.login');
+    }
     public function registration(ServerRequest $request)
     {
         $params = $request->getParsedBody();
