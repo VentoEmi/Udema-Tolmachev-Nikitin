@@ -19,7 +19,8 @@ class CourseController
     public function course_detailPage(View $view, int $course_id)
     {
         $courses = ORM::forTable('course')->find_one($course_id);
-
+        $comments = ORM::forTable('comments')->where('course_id', $course_id)
+            ->join('users', ['comments.user_id', '=', 'users.id'])->find_many();
         $contents = ORM::forTable('content')
             ->where('course_id', $course_id)
             ->find_many();
@@ -32,7 +33,8 @@ class CourseController
         }
         return $view->make('udema.course-detail', [
             'courses' => $courses,
-            'contents' => $contents
+            'contents' => $contents,
+            'comments' => $comments
         ]);
     }
 

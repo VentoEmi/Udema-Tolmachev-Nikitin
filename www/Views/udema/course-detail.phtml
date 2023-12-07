@@ -27,7 +27,65 @@
 
     <!-- YOUR CUSTOM CSS -->
     <link href="../../udema/css/custom.css" rel="stylesheet">
-
+    <style>
+        .rating-area {
+            overflow: hidden;
+            width: 265px;
+        }
+        .rating-area:not(:checked) > input {
+            display: none;
+        }
+        .rating-area:not(:checked) > label {
+            float: right;
+            width: 42px;
+            padding: 0;
+            cursor: pointer;
+            font-size: 32px;
+            line-height: 32px;
+            color: lightgrey;
+            text-shadow: 1px 1px #bbb;
+        }
+        .rating-area:not(:checked) > label:before {
+            content: '★';
+        }
+        .rating-area > input:checked ~ label {
+            color: gold;
+            text-shadow: 1px 1px #c60;
+        }
+        .rating-area:not(:checked) > label:hover,
+        .rating-area:not(:checked) > label:hover ~ label {
+            color: gold;
+        }
+        .rating-area > input:checked + label:hover,
+        .rating-area > input:checked + label:hover ~ label,
+        .rating-area > input:checked ~ label:hover,
+        .rating-area > input:checked ~ label:hover ~ label,
+        .rating-area > label:hover ~ input:checked ~ label {
+            color: gold;
+            text-shadow: 1px 1px goldenrod;
+        }
+        .rate-area > label:active {
+            position: relative;
+        }
+        .rating-result {
+            margin: 0 auto;
+        }
+        .rating-result span {
+            padding: 0;
+            font-size: 32px;
+            margin: 0 3px;
+            line-height: 1;
+            color: lightgrey;
+            text-shadow: 1px 1px #bbb;
+        }
+        .rating-result > span:before {
+            content: '★';
+        }
+        .rating-result > span.active {
+            color: gold;
+            text-shadow: 1px 1px #c60;
+        }
+    </style>
 </head>
 
 <body>
@@ -147,11 +205,35 @@
 								<div class="row">
 									<div class="col-lg-3">
 										<div id="review_summary">
-											<strong>4.7</strong>
-											<div class="rating">
-												<i class="icon_star voted"></i><i class="icon_star voted"></i><i class="icon_star voted"></i><i class="icon_star voted"></i><i class="icon_star"></i>
-											</div>
-											<small>Based on 4 reviews</small>
+                                            <strong><?php
+                                                $count = 0;
+                                                foreach($comments as $comment) {
+                                                    $count+=$comment->mark/count($comments);
+                                                }
+                                                echo round($count,1);
+                                                echo '</strong>';
+                                                echo '<div class="rating">';
+                                                echo '<div class="rating-result">';
+                                                for ($i = 1; $i <= 5; $i++) {
+                                                    if ($i <= $count) {
+                                                        echo '<span class="active"></span>';
+                                                    } else {
+                                                        echo '<span></span>';
+                                                    }
+                                                }
+                                                ?>
+                                        </div>
+                                    </div>
+                                    <small>Based on
+                                        <?php
+                                        $count = 0;
+                                        foreach($comments as $comment) {
+                                            $count=+$comment->mark ;
+                                        }
+                                        echo count($comments);
+                                        ?>
+
+                                        reviews</small>
 										</div>
 									</div>
 									<div class="col-lg-9">
@@ -206,62 +288,61 @@
 							</div>
 
 							<hr>
+                            <form action="/comment/<?=$courses->id?>" method="post" style="margin: 20px 0 20px 0">
+                                <div class="rating-area">
+                                    <input type="radio" id="star-5" name="rating" value="5">
+                                    <label for="star-5" title="Оценка «5»"></label>
+                                    <input type="radio" id="star-4" name="rating" value="4">
+                                    <label for="star-4" title="Оценка «4»"></label>
+                                    <input type="radio" id="star-3" name="rating" value="3">
+                                    <label for="star-3" title="Оценка «3»"></label>
+                                    <input type="radio" id="star-2" name="rating" value="2">
+                                    <label for="star-2" title="Оценка «2»"></label>
+                                    <input type="radio" id="star-1" name="rating" value="1">
+                                    <label for="star-1" title="Оценка «1»"></label>
+                                </div>
+                                <input type="text" placeholder="comment" name="comment">
+                                <input type="submit" value="submit">
+
+                            </form>
 
 							<div class="reviews-container">
 
-								<div class="review-box clearfix">
-									<figure class="rev-thumb"><img src="../../udema/img/avatar1.jpg" alt="">
-									</figure>
-									<div class="rev-content">
-										<div class="rating">
-											<i class="icon_star voted"></i><i class="icon_star voted"></i><i class="icon_star voted"></i><i class="icon_star voted"></i><i class="icon_star"></i>
-										</div>
-										<div class="rev-info">
-											Admin – April 03, 2016:
-										</div>
-										<div class="rev-text">
-											<p>
-												Sed eget turpis a pede tempor malesuada. Vivamus quis mi at leo pulvinar hendrerit. Cum sociis natoque penatibus et magnis dis
-											</p>
-										</div>
-									</div>
-								</div>
+
 								<!-- /review-box -->
-								<div class="review-box clearfix">
-									<figure class="rev-thumb"><img src="../../udema/img/avatar2.jpg" alt="">
-									</figure>
-									<div class="rev-content">
-										<div class="rating">
-											<i class="icon-star voted"></i><i class="icon_star voted"></i><i class="icon_star voted"></i><i class="icon_star voted"></i><i class="icon_star"></i>
-										</div>
-										<div class="rev-info">
-											Ahsan – April 01, 2016:
-										</div>
-										<div class="rev-text">
-											<p>
-												Sed eget turpis a pede tempor malesuada. Vivamus quis mi at leo pulvinar hendrerit. Cum sociis natoque penatibus et magnis dis
-											</p>
-										</div>
-									</div>
-								</div>
-								<!-- /review-box -->
-								<div class="review-box clearfix">
-									<figure class="rev-thumb"><img src="../../udema/img/avatar3.jpg" alt="">
-									</figure>
-									<div class="rev-content">
-										<div class="rating">
-											<i class="icon-star voted"></i><i class="icon_star voted"></i><i class="icon_star voted"></i><i class="icon_star voted"></i><i class="icon_star"></i>
-										</div>
-										<div class="rev-info">
-											Sara – March 31, 2016:
-										</div>
-										<div class="rev-text">
-											<p>
-												Sed eget turpis a pede tempor malesuada. Vivamus quis mi at leo pulvinar hendrerit. Cum sociis natoque penatibus et magnis dis
-											</p>
-										</div>
-									</div>
-								</div>
+                                <?php
+                                foreach($comments as $comment):
+                                    ?>
+                                    <div class="review-box clearfix">
+                                        <figure class="rev-thumb"><img src="/img/<?=$comment->photo_url?>" alt="">
+                                        </figure>
+                                        <div class="rev-content">
+                                            <div class="rating">
+                                                <div class="rating-result">
+                                                    <?php
+                                                    for ($i = 1; $i <= 5; $i++) {
+                                                        if ($i <= $comment->mark) {
+                                                            echo '<span class="active"></span>';
+                                                        } else {
+                                                            echo '<span></span>';
+                                                        }
+                                                    }
+                                                    ?>
+                                                </div>
+                                            </div>
+                                            <div class="rev-info">
+                                                <?=$comment->name?> – <?=$comment->date?>:
+                                            </div>
+                                            <div class="rev-text">
+                                                <p>
+                                                    <?=$comment->description?>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <?php
+                                endforeach;
+                                ?>
 								<!-- /review-box -->
 							</div>
 							<!-- /review-container -->

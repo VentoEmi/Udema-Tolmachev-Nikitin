@@ -18,6 +18,20 @@ class UserController
         $user = ORM::forTable('users')->find_one($_SESSION['user_id']);
         return $view->make('udema.user-profile',['user' => $user]);
     }
+    public function comment(ServerRequest $request, int $course_id)
+    {
+        date_default_timezone_set('Asia/Krasnoyarsk');
+        $params=$request->getParsedBody();
+        ORM::forTable('comments')->create([
+            'course_id'=>$course_id,
+            'user_id'=>$_SESSION['user_id'],
+            'description'=>$params['comment'],
+            'date'=>date("Y-m-d H:i"),
+            'mark'=>$params['rating'],
+            'is_accept'=>0
+        ])->save();
+        return new RedirectResponse('/course_detail/'.$course_id);
+    }
     public function updateUserInfo(ServerRequest $request)
     {
         $params = $request->getParsedBody();

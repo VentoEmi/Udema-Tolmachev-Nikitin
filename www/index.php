@@ -29,7 +29,7 @@ $router->get('/course_detail/{course_id}',[CourseController::class,'course_detai
 
 $router->group(['middleware' =>[AuthMiddleware::class]],
     function (Router $router) {
-
+        $router->post('/comment/{course_id}',[UserController::class,'comment']);
         $router->get('/user/profile', [UserController::class, 'userProfilePage']);
         $router->post('/user/update', [UserController::class, 'updateUserInfo']);
 
