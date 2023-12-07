@@ -32,16 +32,19 @@ class UserController
                         if (empty($params['new_password'])){
                             $user->set(['password'=>$user['password']]);}
                         else $user->set(['password'=>md5($params['new_password'])]);
-                        $random = bin2hex(random_bytes(10));
-                        $typeFile = explode('.',$request->getUploadedFiles()['photo']->getClientFilename());
-                        $randomName = $typeFile[0].$random.time().'.'.$typeFile[1];
-                        $request->getUploadedFiles()['photo']->moveTo("/var/www/html/img/". $randomName);
+                        if (!empty($params['photo'])){
+                            $random = bin2hex(random_bytes(10));
+                            $typeFile = explode('.',$request->getUploadedFiles()['photo']->getClientFilename());
+                            $randomName = $typeFile[0].$random.time().'.'.$typeFile[1];
+                            $request->getUploadedFiles()['photo']->moveTo("/var/www/html/img/". $randomName);
+                            $user->set('photo_url',$randomName);
+                        }
                         $user->set([
                             'name'      => $params['name'],
                             'last_name' => $params['lastname'],
                             'phone'     => $params['phone'],
                             'info'      => $params['info'],
-                            'photo_url' => $randomName
+                            'photo_url' => $user['photo_url']
                         ]);
                         $user->save();
                         $_SESSION['error'] = 'Successful';
