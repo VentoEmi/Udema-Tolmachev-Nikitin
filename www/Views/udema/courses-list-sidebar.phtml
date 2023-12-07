@@ -63,18 +63,19 @@
 						</div>
 					</li>
 					<li>
-						<div class="layout_view">
-							<a href="../../../udema/courses-grid.html"><i class="icon-th"></i></a>
-							<a href="#0" class="active"><i class="icon-th-list"></i></a>
-						</div>
+
 					</li>
 					<li>
-						<select name="orderby" class="selectbox">
-							<option value="category">Category</option>
-							<option value="category 2">Literature</option>
-							<option value="category 3">Architecture</option>
-							<option value="category 4">Economy</option>
-							</select>
+                        <form action="/courses_list" method="post">
+                            <select name="orderby" class="selectbox">
+                                <option selected disabled>Все</option>
+                                <?php foreach ($categories as $category):?>
+                                    <option value="<?=$category['category']?>"><?=$category['category']?></option>
+                                <?php endforeach;?>
+                            </select>
+                            <input class="layout_view" type="submit" value="Sort">
+                        </form>
+
 					</li>
 				</ul>
 			</div>

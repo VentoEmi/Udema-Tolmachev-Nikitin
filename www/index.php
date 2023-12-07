@@ -26,6 +26,7 @@ $router->post('/register',[AuthController::class,'registration']);
 $router->post('/login',[AuthController::class,'login']);
 $router->get('/courses_list',[CourseController::class,'coursesPage']);
 $router->get('/course_detail/{course_id}',[CourseController::class,'course_detailPage']);
+$router->post('/courses_list',[CourseController::class,'coursesPage']);
 
 $router->group(['middleware' =>[AuthMiddleware::class]],
     function (Router $router) {
